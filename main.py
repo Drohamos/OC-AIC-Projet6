@@ -12,8 +12,8 @@ class OrdinateurBookmarker:
     # @todo implémenter récupération dans fichier
     def load(self):
         self.ordinateurs = [
-            Ordinateur(),
-            Ordinateur(),
+            Ordinateur("192.168.1.156", "linuxlocal"),
+            Ordinateur("192.168.1.157", "linuxlocal"),
         ]
 
     # @todo implémenter sauvegarde dans fichier
@@ -22,10 +22,10 @@ class OrdinateurBookmarker:
 
 # Définit un ordinateur distant sur lequel on peut se connecter
 class Ordinateur:
-    def __init__(self):
-        self.name = "VM LinuxLocal"
-        self.ip   = "192.168.1.156"
-        self.user = "linuxlocal"
+    def __init__(self, ip, user="sysadmin", name=None):
+        self.ip   = ip
+        self.user = user
+        self.name = name
     
     @property
     def ssh_address(self):
