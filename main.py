@@ -12,15 +12,16 @@ class Ordinateur:
         self.ip   = "192.168.1.156"
         self.user = "linuxlocal"
     
-    # Renvoie adresse ssh (user@ip)
-    def _get_ssh_address(self):
+    @property
+    def ssh_address(self):
         return self.user + "@" + self.ip
 
-pc1 = Connection('linuxlocal@192.168.1.156')
+pc1 = Ordinateur()
+co1 = Connection(pc1.ssh_address)
 
-result = pc1.run('hostname -s', hide=True)
+result = co1.run('hostname -s', hide=True)
 print("Résultat : " + str(result.stdout))
 print("Code retour : " + str(result.return_code))
 print("Code erreur : " + str(result.stderr))
 
-pc1.close()
+co1.close()
