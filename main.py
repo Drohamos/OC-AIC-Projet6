@@ -47,7 +47,26 @@ def test():
         co1.close()
 
 test()
+        
+class GridIterator:
+    currentRow = 1
+    currentCol = 1
 
+    def __init__(self, numCols):
+        self.numCols = numCols
+
+    def row(self):
+        return self.currentRow
+
+    def col(self):
+        previousCol = self.currentCol
+
+        self.currentCol += 1
+        if (self.currentCol > self.numCols):
+            self.currentRow += 1
+            self.currentCol = 1
+
+        return previousCol
 
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout
@@ -81,13 +100,15 @@ class Principale(QWidget):
         btn4=QPushButton("Bouton4")
         btn5=QPushButton("Bouton5")
         btn6=QPushButton("Bouton6")
+
+        it = GridIterator(3)
         
-        grille.addWidget(btn1, 1,1)
-        grille.addWidget(btn2, 1,2)
-        grille.addWidget(btn3, 2,1)
-        grille.addWidget(btn4, 2,2)
-        grille.addWidget(btn5, 3,1)
-        grille.addWidget(btn6, 3,2)
+        grille.addWidget(btn1, it.row(), it.col())
+        grille.addWidget(btn2, it.row(), it.col())
+        grille.addWidget(btn3, it.row(), it.col())
+        grille.addWidget(btn4, it.row(), it.col())
+        grille.addWidget(btn5, it.row(), it.col())
+        grille.addWidget(btn6, it.row(), it.col())
 
         return grille
     
