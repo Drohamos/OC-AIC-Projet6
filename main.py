@@ -87,7 +87,7 @@ class Principale(QWidget):
         self.setLayout(vbox)
 
         self.setGeometry(300,300,500,250)
-        self.setWindowTitle('Fenêtre principale')
+        self.setWindowTitle('AICToolbox')
 
         self.show()
 
