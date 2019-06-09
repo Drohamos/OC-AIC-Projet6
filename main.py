@@ -31,19 +31,23 @@ class Ordinateur:
     def ssh_address(self):
         return self.user + "@" + self.ip
 
-book = OrdinateurBookmarker()
+def test():
+    book = OrdinateurBookmarker()
 
-for pc in book.ordinateurs:
-    print (pc.ip)
+    for pc in book.ordinateurs:
+        print (pc.ip)
 
-    co1 = Connection(pc.ssh_address)
+        co1 = Connection(pc.ssh_address)
 
-    result = co1.run('hostname -s', hide=True)
-    print("Résultat : " + str(result.stdout))
-    print("Code retour : " + str(result.return_code))
-    print("Code erreur : " + str(result.stderr))
+        result = co1.run('hostname -s', hide=True)
+        print("Résultat : " + str(result.stdout))
+        print("Code retour : " + str(result.return_code))
+        print("Code erreur : " + str(result.stderr))
 
-    co1.close()
+        co1.close()
+
+test()
+
 
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout
