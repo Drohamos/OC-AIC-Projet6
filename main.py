@@ -44,3 +44,49 @@ for pc in book.ordinateurs:
     print("Code erreur : " + str(result.stderr))
 
     co1.close()
+
+import sys
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout
+    
+# Fenêtre prinicpale : sélection du/des ordinateurs
+class Principale(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setUI()
+    
+    def setUI(self):
+        grille = self.buttons_grid()
+
+        vbox = QVBoxLayout()
+        vbox.addLayout(grille)
+        vbox.addStretch(1)
+
+        self.setLayout(vbox)
+
+        self.setGeometry(300,300,500,250)
+        self.setWindowTitle('Fenêtre principale')
+
+        self.show()
+
+    def buttons_grid(self):
+        grille=QGridLayout()
+
+        btn1=QPushButton("Bouton1")
+        btn2=QPushButton("Bouton2")
+        btn3=QPushButton("Bouton3")
+        btn4=QPushButton("Bouton4")
+        btn5=QPushButton("Bouton5")
+        btn6=QPushButton("Bouton6")
+        
+        grille.addWidget(btn1, 1,1)
+        grille.addWidget(btn2, 1,2)
+        grille.addWidget(btn3, 2,1)
+        grille.addWidget(btn4, 2,2)
+        grille.addWidget(btn5, 3,1)
+        grille.addWidget(btn6, 3,2)
+
+        return grille
+    
+monApp=QApplication(sys.argv)
+fenetre=Principale()
+sys.exit(monApp.exec_())
