@@ -26,17 +26,21 @@ class Ordinateur:
         self.ip   = ip
         self.user = user
         self.name = name
-    
+
     @property
     def ssh_address(self):
         return self.user + "@" + self.ip
 
-pc1 = Ordinateur()
-co1 = Connection(pc1.ssh_address)
+book = OrdinateurBookmarker()
 
-result = co1.run('hostname -s', hide=True)
-print("Résultat : " + str(result.stdout))
-print("Code retour : " + str(result.return_code))
-print("Code erreur : " + str(result.stderr))
+for pc in book.ordinateurs:
+    print (pc.ip)
 
-co1.close()
+    co1 = Connection(pc.ssh_address)
+
+    result = co1.run('hostname -s', hide=True)
+    print("Résultat : " + str(result.stdout))
+    print("Code retour : " + str(result.return_code))
+    print("Code erreur : " + str(result.stderr))
+
+    co1.close()
