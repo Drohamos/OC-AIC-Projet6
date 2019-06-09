@@ -5,6 +5,21 @@ import warnings
 import cryptography
 warnings.simplefilter("ignore", cryptography.utils.CryptographyDeprecationWarning)
 
+class OrdinateurBookmarker:
+    def __init__(self):
+        self.load()
+
+    # @todo implémenter récupération dans fichier
+    def load(self):
+        self.ordinateurs = [
+            Ordinateur(),
+            Ordinateur(),
+        ]
+
+    # @todo implémenter sauvegarde dans fichier
+    def save(self):
+        print("Lise des ordinateurs sauvegardée")
+
 # Définit un ordinateur distant sur lequel on peut se connecter
 class Ordinateur:
     def __init__(self):
