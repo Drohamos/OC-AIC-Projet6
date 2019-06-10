@@ -96,22 +96,11 @@ class Principale(QWidget):
         vbox.addLayout(grille)
 
         vbox.addStretch(1)
-
-        # Formulaire : conteneur
-        form_hbox = QHBoxLayout()
         
-        # Formulaire : champs de texte
-        edit_ip = line_with_placeholder("Adresse IP*")
-        edit_user = line_with_placeholder("Utilisateur")
-        edit_name = line_with_placeholder("Libellé")
+        form = FormOrdinateur()
 
-        form_hbox.addWidget(edit_ip)
-        form_hbox.addWidget(edit_user)
-        form_hbox.addWidget(edit_name)
-
-        vbox.addLayout(form_hbox)
+        vbox.addWidget(form)
         vbox.addWidget(QPushButton("Ajouter"))
-
 
         self.setLayout(vbox)
         self.setGeometry(300,300,500,250)
@@ -135,6 +124,31 @@ class Principale(QWidget):
 
         return grille
 
+class FormOrdinateur(QWidget):
+    edit_ip = line_with_placeholder("Adresse IP*")
+    edit_user = line_with_placeholder("Utilisateur")
+    edit_name = line_with_placeholder("Libellé")
+
+    def __init__(self):
+        super().__init__()
+        self.setUI()
+    
+    def setUI(self):
+        hbox = QHBoxLayout()
+        
+        hbox.addWidget(self.edit_ip)
+        hbox.addWidget(self.edit_user)
+        hbox.addWidget(self.edit_name)
+
+        self.setLayout(hbox)
+
+    # @todo tester export sous forme d'objet Ordinateur
+    def to_ordinateur(self):
+        ordinateur = Ordinateur(self.edit_ip.text, self.edit_user.text, self.edit_name.text)
+
+        return ordinateur
+
+        
 book = OrdinateurBookmarker()
     
 monApp=QApplication(sys.argv)
