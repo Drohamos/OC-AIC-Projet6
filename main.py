@@ -72,7 +72,13 @@ class GridIterator:
         return previousCol
 
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
+    
+def line_with_placeholder(placeholder):
+    line_edit = QLineEdit()
+    line_edit.setPlaceholderText(placeholder)
+
+    return line_edit
     
 # Fenêtre prinicpale : sélection du/des ordinateurs
 class Principale(QWidget):
@@ -81,18 +87,38 @@ class Principale(QWidget):
         self.setUI()
     
     def setUI(self):
-        grille = self.buttons_grid()
-
         vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("Sélectionner un ordinateur :"))
+
+        # Liste des ordinateurs
+        grille = self.buttons_grid()
         vbox.addLayout(grille)
+
         vbox.addStretch(1)
 
-        self.setLayout(vbox)
+        # Formulaire
+        form_hbox = QHBoxLayout()
+        
+        edit_ip = line_with_placeholder("Adresse IP*")
+        edit_user = line_with_placeholder("Utilisateur")
+        edit_name = line_with_placeholder("Libellé")
 
+        form_hbox.addWidget(edit_ip)
+        form_hbox.addWidget(edit_user)
+        form_hbox.addWidget(edit_name)
+
+        vbox.addLayout(form_hbox)
+        vbox.addWidget(QPushButton("Ajouter"))
+
+
+        self.setLayout(vbox)
         self.setGeometry(300,300,500,250)
         self.setWindowTitle('Fenêtre principale')
 
         self.show()
+
+    def ordinateur_clicked(self):
+        print("Connexion à " + self.sender().text())
 
     def buttons_grid(self):
         grille=QGridLayout()
