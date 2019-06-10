@@ -14,6 +14,9 @@ class OrdinateurBookmarker:
         self.ordinateurs = [
             Ordinateur("192.168.1.156", "linuxlocal"),
             Ordinateur("192.168.1.157", "linuxlocal"),
+            Ordinateur("192.168.1.300", name="Test"),
+            Ordinateur("192.168.1.400"),
+            Ordinateur("192.168.1.500"),
         ]
 
     # @todo implémenter sauvegarde dans fichier
@@ -94,23 +97,16 @@ class Principale(QWidget):
     def buttons_grid(self):
         grille=QGridLayout()
 
-        btn1=QPushButton("Bouton1")
-        btn2=QPushButton("Bouton2")
-        btn3=QPushButton("Bouton3")
-        btn4=QPushButton("Bouton4")
-        btn5=QPushButton("Bouton5")
-        btn6=QPushButton("Bouton6")
+        it = GridIterator(2)
 
-        it = GridIterator(3)
-        
-        grille.addWidget(btn1, it.row(), it.col())
-        grille.addWidget(btn2, it.row(), it.col())
-        grille.addWidget(btn3, it.row(), it.col())
-        grille.addWidget(btn4, it.row(), it.col())
-        grille.addWidget(btn5, it.row(), it.col())
-        grille.addWidget(btn6, it.row(), it.col())
+        for ordinateur in book.ordinateurs:
+            btn = QPushButton(ordinateur.ip)
+            btn.clicked.connect(self.ordinateur_clicked)
+            grille.addWidget(btn, it.row(), it.col())
 
         return grille
+    
+book = OrdinateurBookmarker()
     
 monApp=QApplication(sys.argv)
 fenetre=Principale()
