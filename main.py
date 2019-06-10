@@ -73,14 +73,14 @@ class GridIterator:
 
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
-    
+
 def line_with_placeholder(placeholder):
     line_edit = QLineEdit()
     line_edit.setPlaceholderText(placeholder)
 
     return line_edit
     
-# Fenêtre prinicpale : sélection du/des ordinateurs
+# Fenêtre principale : sélection du/des ordinateurs
 class Principale(QWidget):
     def __init__(self):
         super().__init__()
@@ -96,9 +96,10 @@ class Principale(QWidget):
 
         vbox.addStretch(1)
 
-        # Formulaire
+        # Formulaire : conteneur
         form_hbox = QHBoxLayout()
         
+        # Formulaire : champs de texte
         edit_ip = line_with_placeholder("Adresse IP*")
         edit_user = line_with_placeholder("Utilisateur")
         edit_name = line_with_placeholder("Libellé")
@@ -120,9 +121,10 @@ class Principale(QWidget):
     def ordinateur_clicked(self):
         print("Connexion à " + self.sender().text())
 
+    # Crée une boucle de boutons à partir de la liste des ordinateurs
     def buttons_grid(self):
         grille=QGridLayout()
-
+        
         it = GridIterator(2)
 
         for ordinateur in book.ordinateurs:
@@ -131,7 +133,7 @@ class Principale(QWidget):
             grille.addWidget(btn, it.row(), it.col())
 
         return grille
-    
+
 book = OrdinateurBookmarker()
     
 monApp=QApplication(sys.argv)
