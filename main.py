@@ -48,8 +48,6 @@ def test():
         print("Code erreur : " + str(result.stderr))
 
         co1.close()
-
-test()
         
 class GridIterator:
     currentRow = 1
