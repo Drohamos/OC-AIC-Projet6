@@ -19,6 +19,9 @@ class OrdinateurBookmarker:
             Ordinateur("192.168.1.500"),
         ]
 
+    def add(self, ordinateur):
+        self.ordinateurs.append(ordinateur)
+
     # @todo implémenter sauvegarde dans fichier
     def save(self):
         print("Lise des ordinateurs sauvegardée")
