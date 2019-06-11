@@ -44,6 +44,7 @@ class Principale(QWidget):
         btn = OrdinateurButton(ordinateur)
         btn.clicked.connect(self.ordinateur_clicked)
         self.grille.autoAddWidget(btn)
+        self.form.reset()
 
     def ordinateur_clicked(self):
         print("Connexion à " + self.sender().ordinateur.ssh_address)
@@ -112,3 +113,8 @@ class FormOrdinateur(QWidget):
         self.edit_ip.setText(ordinateur.ip)
         self.edit_user.setText(ordinateur.user)
         self.edit_name.setText(ordinateur.name)
+
+    def reset(self):
+        self.edit_ip.setText("")
+        self.edit_user.setText("")
+        self.edit_name.setText("")
