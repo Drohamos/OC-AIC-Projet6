@@ -2,8 +2,9 @@
 # Auteur : Robin BARKAS
 
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
-import utils
+import models
 import services
+import utils
 
 # Fenêtre principale : sélection du/des ordinateurs
 class Principale(QWidget):
@@ -17,8 +18,8 @@ class Principale(QWidget):
         vbox.addWidget(QLabel("Sélectionner un ordinateur :"))
 
         # Liste des ordinateurs
-        grille = self.buttons_grid()
-        vbox.addLayout(grille)
+        self.grille = self.buttons_grid()
+        vbox.addLayout(self.grille)
 
         vbox.addStretch(1)
         
@@ -37,24 +38,34 @@ class Principale(QWidget):
         self.show()
 
     def add_ordinateur_clicked(self):
-        print("Ajout ordinateur")
-        print(self.form.to_ordinateur())
+        ordinateur = self.form.to_ordinateur()
+        services.book.add(ordinateur)
+        
+        btn = OrdinateurButton(ordinateur)
+        btn.clicked.connect(self.ordinateur_clicked)
+        self.grille.autoAddWidget(btn)
 
     def ordinateur_clicked(self):
         print("Connexion à " + self.sender().ordinateur.ssh_address)
 
     # Crée une boucle de boutons à partir de la liste des ordinateurs
     def buttons_grid(self):
-        grille=QGridLayout()
-        
-        it = utils.GridIterator(2)
+        grille=AutoGridLayout()
 
         for ordinateur in services.book.ordinateurs:
             btn = OrdinateurButton(ordinateur)
             btn.clicked.connect(self.ordinateur_clicked)
-            grille.addWidget(btn, it.row(), it.col())
+            grille.autoAddWidget(btn)
 
         return grille
+
+class AutoGridLayout(QGridLayout):
+    def __init__(self, cols = 2):
+        super().__init__()
+        self.iterator = utils.GridIterator(cols)
+
+    def autoAddWidget(self, widget):
+        self.addWidget(widget, self.iterator.row(), self.iterator.col())
 
 # Bouton de connexion à un ordinateur
 class OrdinateurButton(QPushButton):
