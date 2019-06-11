@@ -68,7 +68,9 @@ def test():
         print("Code erreur : " + str(result.stderr))
 
         co1.close()
-        
+
+# Permet de générer l'incrémentation du numéro de ligne/colonne
+# Utilisé pour générer une grille automatiquement à partir d'une liste
 class GridIterator:
     currentRow = 1
     currentCol = 1
@@ -76,18 +78,24 @@ class GridIterator:
     def __init__(self, numCols):
         self.numCols = numCols
 
-    def row(self):
-        return self.currentRow
-
-    def col(self):
-        previousCol = self.currentCol
-
-        self.currentCol += 1
-        if (self.currentCol > self.numCols):
+    # Quand le nombre de colonne dépasse le maximum défini,
+    # on incrémente la ligne et on réinitialise la colonne
+    def incrementCol(self):
+        if (self.currentCol == self.numCols):
             self.currentRow += 1
             self.currentCol = 1
+        else: 
+            self.currentCol += 1
 
-        return previousCol
+    def row(self):
+        return self.currentRow
+    
+    def col(self):
+        col = self.currentCol
+
+        self.incrementCol()
+
+        return col
 
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
@@ -117,8 +125,10 @@ class Principale(QWidget):
 
         vbox.addStretch(1)
         
+        # Formulaire d'ajout
         vbox.addWidget(self.form)
 
+        # Bouton de validation du formulaire
         add_ordinateur = QPushButton("Ajouter")
         add_ordinateur.clicked.connect(self.add_ordinateur_clicked)
         vbox.addWidget(add_ordinateur)
@@ -157,6 +167,8 @@ class OrdinateurButton(QPushButton):
         # On stocke une copie complète de l'objet ordinateur 
         self.ordinateur = ordinateur
 
+# Formulaire d'ajout/modification d'un ordinateur
+# Le bouton de validation n'est pas inclus car géré par fenêtre parente
 class FormOrdinateur(QWidget):
     edit_ip = line_with_placeholder("Adresse IP*")
     edit_user = line_with_placeholder("Utilisateur")
