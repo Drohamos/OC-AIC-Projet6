@@ -75,6 +75,8 @@ class GridIterator:
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
 
+monApp=QApplication(sys.argv)
+
 def line_with_placeholder(placeholder):
     line_edit = QLineEdit()
     line_edit.setPlaceholderText(placeholder)
@@ -85,6 +87,7 @@ def line_with_placeholder(placeholder):
 class Principale(QWidget):
     def __init__(self):
         super().__init__()
+        self.form = FormOrdinateur()
         self.setUI()
     
     def setUI(self):
@@ -97,16 +100,21 @@ class Principale(QWidget):
 
         vbox.addStretch(1)
         
-        form = FormOrdinateur()
+        vbox.addWidget(self.form)
 
-        vbox.addWidget(form)
-        vbox.addWidget(QPushButton("Ajouter"))
+        add_ordinateur = QPushButton("Ajouter")
+        add_ordinateur.clicked.connect(self.add_ordinateur_clicked)
+        vbox.addWidget(add_ordinateur)
 
         self.setLayout(vbox)
         self.setGeometry(300,300,500,250)
         self.setWindowTitle('Fenêtre principale')
 
         self.show()
+
+    def add_ordinateur_clicked(self):
+        print("Ajout ordinateur")
+        print(self.form.to_ordinateur())
 
     def ordinateur_clicked(self):
         print("Connexion à " + self.sender().text())
@@ -142,15 +150,13 @@ class FormOrdinateur(QWidget):
 
         self.setLayout(hbox)
 
-    # @todo tester export sous forme d'objet Ordinateur
+    # Instancie un objet Ordinateur à partir de l'état actuel du formulaire
     def to_ordinateur(self):
-        ordinateur = Ordinateur(self.edit_ip.text, self.edit_user.text, self.edit_name.text)
+        ordinateur = Ordinateur(self.edit_ip.text(), self.edit_user.text(), self.edit_name.text())
 
         return ordinateur
 
-        
 book = OrdinateurBookmarker()
     
-monApp=QApplication(sys.argv)
 fenetre=Principale()
 sys.exit(monApp.exec_())
