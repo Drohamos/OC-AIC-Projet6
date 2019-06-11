@@ -173,6 +173,12 @@ class FormOrdinateur(QWidget):
 
         return ordinateur
 
+    # Modifie l'état du formulaire pour correspondre à un objet ordinateur donné
+    def fill_from_ordinateur(self, ordinateur):
+        self.edit_ip.setText(ordinateur.ip)
+        self.edit_user.setText(ordinateur.user)
+        self.edit_name.setText(ordinateur.name)
+
 book = OrdinateurBookmarker()
     
 fenetre=Principale()
