@@ -134,7 +134,7 @@ class Principale(QWidget):
         print(self.form.to_ordinateur())
 
     def ordinateur_clicked(self):
-        print("Connexion à " + self.sender().text())
+        print("Connexion à " + self.sender().ordinateur.ssh_address)
 
     # Crée une boucle de boutons à partir de la liste des ordinateurs
     def buttons_grid(self):
@@ -143,11 +143,19 @@ class Principale(QWidget):
         it = GridIterator(2)
 
         for ordinateur in book.ordinateurs:
-            btn = QPushButton(ordinateur.ip)
+            btn = OrdinateurButton(ordinateur)
             btn.clicked.connect(self.ordinateur_clicked)
             grille.addWidget(btn, it.row(), it.col())
 
         return grille
+
+# Bouton de connexion à un ordinateur
+class OrdinateurButton(QPushButton):
+    def __init__(self, ordinateur):
+        # Le label sera l'adresse ip de l'ordinateur
+        super().__init__(ordinateur.ip)
+        # On stocke une copie complète de l'objet ordinateur 
+        self.ordinateur = ordinateur
 
 class FormOrdinateur(QWidget):
     edit_ip = line_with_placeholder("Adresse IP*")
