@@ -1,3 +1,6 @@
+# AICToolbox
+# Auteur : Robin BARKAS
+
 # Définit un ordinateur distant sur lequel on peut se connecter
 class Ordinateur:
     def __init__(self, ip, user="sysadmin", name=None):

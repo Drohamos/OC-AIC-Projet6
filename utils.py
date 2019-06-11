@@ -1,3 +1,6 @@
+# AICToolbox
+# Auteur : Robin BARKAS
+
 # Permet de générer l'incrémentation du numéro de ligne/colonne
 # Utilisé pour générer une grille automatiquement à partir d'une liste
 class GridIterator:

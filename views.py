@@ -1,3 +1,6 @@
+# AICToolbox
+# Auteur : Robin BARKAS
+
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
 import utils
 import services
