@@ -47,7 +47,10 @@ class Principale(QWidget):
         self.form.reset()
 
     def ordinateur_clicked(self):
-        print("Connexion à " + self.sender().ordinateur.ssh_address)
+        ordinateur = self.sender().ordinateur
+
+        print("Connexion à " + ordinateur.ssh_address)
+        utils.test(ordinateur)
 
     # Crée une boucle de boutons à partir de la liste des ordinateurs
     def buttons_grid(self):

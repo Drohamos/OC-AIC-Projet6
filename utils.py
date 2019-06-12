@@ -1,6 +1,8 @@
 # AICToolbox
 # Auteur : Robin BARKAS
 
+from fabric import Connection
+
 # Permet de générer l'incrémentation du numéro de ligne/colonne
 # Utilisé pour générer une grille automatiquement à partir d'une liste
 class GridIterator:
@@ -29,18 +31,12 @@ class GridIterator:
 
         return col
 
-# Exemple de connexion + exécution commande sur poste distant
-# def test():
-#     book = services.OrdinateurBookmarker()
+def test(ordinateur):
+        co1 = Connection(ordinateur.ssh_address)
 
-#     for pc in book.ordinateurs:
-#         print (pc.ip)
+        result = co1.run('hostname -s', hide=True)
+        print("Résultat : " + str(result.stdout))
+        print("Code retour : " + str(result.return_code))
+        print("Code erreur : " + str(result.stderr))
 
-#         co1 = Connection(pc.ssh_address)
-
-#         result = co1.run('hostname -s', hide=True)
-#         print("Résultat : " + str(result.stdout))
-#         print("Code retour : " + str(result.return_code))
-#         print("Code erreur : " + str(result.stderr))
-
-#         co1.close()
+        co1.close()
