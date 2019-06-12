@@ -1,3 +1,8 @@
+# AICToolbox
+# Réalisé dans le cadre de la formation Administrateur Infrastructure et Cloud proposée par OpenClassrooms
+# Auteur : Robin BARKAS
+# Créé le 09/06/2019
+
 from fabric import Connection
 
 # Cache les avertissements de dépréciation envoyés par les dépendances de la librairie Fabric
@@ -5,113 +10,15 @@ import warnings
 import cryptography
 warnings.simplefilter("ignore", cryptography.utils.CryptographyDeprecationWarning)
 
-class OrdinateurBookmarker:
-    def __init__(self):
-        self.load()
-
-    # @todo implémenter récupération dans fichier
-    def load(self):
-        self.ordinateurs = [
-            Ordinateur("192.168.1.156", "linuxlocal"),
-            Ordinateur("192.168.1.157", "linuxlocal"),
-        ]
-
-    # @todo implémenter sauvegarde dans fichier
-    def save(self):
-        print("Lise des ordinateurs sauvegardée")
-
-# Définit un ordinateur distant sur lequel on peut se connecter
-class Ordinateur:
-    def __init__(self, ip, user="sysadmin", name=None):
-        self.ip   = ip
-        self.user = user
-        self.name = name
-
-    @property
-    def ssh_address(self):
-        return self.user + "@" + self.ip
-
-def test():
-    book = OrdinateurBookmarker()
-
-    for pc in book.ordinateurs:
-        print (pc.ip)
-
-        co1 = Connection(pc.ssh_address)
-
-        result = co1.run('hostname -s', hide=True)
-        print("Résultat : " + str(result.stdout))
-        print("Code retour : " + str(result.return_code))
-        print("Code erreur : " + str(result.stderr))
-
-        co1.close()
-
-test()
-        
-class GridIterator:
-    currentRow = 1
-    currentCol = 1
-
-    def __init__(self, numCols):
-        self.numCols = numCols
-
-    def row(self):
-        return self.currentRow
-
-    def col(self):
-        previousCol = self.currentCol
-
-        self.currentCol += 1
-        if (self.currentCol > self.numCols):
-            self.currentRow += 1
-            self.currentCol = 1
-
-        return previousCol
-
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout
-    
-# Fenêtre prinicpale : sélection du/des ordinateurs
-class Principale(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setUI()
-    
-    def setUI(self):
-        grille = self.buttons_grid()
+from PyQt5.QtWidgets import QApplication
 
-        vbox = QVBoxLayout()
-        vbox.addLayout(grille)
-        vbox.addStretch(1)
-
-        self.setLayout(vbox)
-
-        self.setGeometry(300,300,500,250)
-        self.setWindowTitle('AICToolbox')
-
-        self.show()
-
-    def buttons_grid(self):
-        grille=QGridLayout()
-
-        btn1=QPushButton("Bouton1")
-        btn2=QPushButton("Bouton2")
-        btn3=QPushButton("Bouton3")
-        btn4=QPushButton("Bouton4")
-        btn5=QPushButton("Bouton5")
-        btn6=QPushButton("Bouton6")
-
-        it = GridIterator(3)
-        
-        grille.addWidget(btn1, it.row(), it.col())
-        grille.addWidget(btn2, it.row(), it.col())
-        grille.addWidget(btn3, it.row(), it.col())
-        grille.addWidget(btn4, it.row(), it.col())
-        grille.addWidget(btn5, it.row(), it.col())
-        grille.addWidget(btn6, it.row(), it.col())
-
-        return grille
-    
 monApp=QApplication(sys.argv)
-fenetre=Principale()
+
+import models
+import services
+import utils
+import views
+
+fenetre=views.Principale()
 sys.exit(monApp.exec_())
