@@ -9,11 +9,21 @@ class OrdinateurBookmarker:
 
     # @todo implémenter récupération dans fichier
     def load(self):
+        self.loadMocks()
+
+    def loadMocks(self):
         self.ordinateurs = [
+            # VM Linuxlocal
             models.Ordinateur("192.168.1.156", "linuxlocal"),
+            # VM Linuxlocal
             models.Ordinateur("192.168.1.157", "linuxlocal"),
+            # IP valide, non joignable (Timeout)
+            models.Ordinateur("1.2.3.4"),
+            # IP invalide
             models.Ordinateur("192.168.1.300", name="Test"),
+            # IP invalide
             models.Ordinateur("192.168.1.400"),
+            # IP invalide
             models.Ordinateur("192.168.1.500"),
         ]
 
