@@ -3,8 +3,6 @@
 # Auteur : Robin BARKAS
 # Créé le 09/06/2019
 
-from fabric import Connection
-
 # Cache les avertissements de dépréciation envoyés par les dépendances de la librairie Fabric
 import warnings
 import cryptography

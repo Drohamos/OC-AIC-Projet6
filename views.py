@@ -48,8 +48,6 @@ class Principale(QWidget):
 
     def ordinateur_clicked(self):
         ordinateur = self.sender().ordinateur
-
-        print("Connexion à " + ordinateur.ssh_address)
         utils.test(ordinateur)
 
     # Crée une boucle de boutons à partir de la liste des ordinateurs

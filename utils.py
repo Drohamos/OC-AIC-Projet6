@@ -2,6 +2,7 @@
 # Auteur : Robin BARKAS
 
 from fabric import Connection
+import scenarios
 
 # Permet de générer l'incrémentation du numéro de ligne/colonne
 # Utilisé pour générer une grille automatiquement à partir d'une liste
@@ -32,11 +33,10 @@ class GridIterator:
         return col
 
 def test(ordinateur):
-        co1 = Connection(ordinateur.ssh_address)
+    scenario = scenarios.GetHostnameScenario(ordinateur)
 
-        result = co1.run('hostname -s', hide=True)
-        print("Résultat : " + str(result.stdout))
-        print("Code retour : " + str(result.return_code))
-        print("Code erreur : " + str(result.stderr))
+    result = scenario.run()
 
-        co1.close()
+    print("Résultat : " + str(result.stdout))
+    print("Code retour : " + str(result.return_code))
+    print("Code erreur : " + str(result.stderr))
