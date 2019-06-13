@@ -4,11 +4,6 @@
 # Licence : MIT
 # Créé le 09/06/2019
 
-# Cache les avertissements de dépréciation envoyés par les dépendances de la librairie Fabric
-import warnings
-import cryptography
-warnings.simplefilter("ignore", cryptography.utils.CryptographyDeprecationWarning)
-
 import sys
 from PyQt5.QtWidgets import QApplication
 

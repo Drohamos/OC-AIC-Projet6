@@ -1,5 +1,10 @@
 from fabric import Connection
 
+# Cache les avertissements de dépréciation envoyés par les dépendances de la librairie Fabric
+import warnings
+import cryptography
+warnings.simplefilter("ignore", cryptography.utils.CryptographyDeprecationWarning)
+
 class Scenario:
     def __init__(self, ordinateur):
         self.ordinateur = ordinateur
