@@ -1,27 +1,37 @@
 # AICToolbox
 # Auteur : Robin BARKAS
 
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox
+
 import models
 import services
 import utils
+import scenarios
 
 # Fenêtre principale : sélection du/des ordinateurs
 class Principale(QWidget):
     def __init__(self):
         super().__init__()
         self.form = FormOrdinateur()
+        self.selected_ordinateur_btn = None
         self.setUI()
     
     def setUI(self):
         vbox = QVBoxLayout()
-        vbox.addWidget(QLabel("Sélectionner un ordinateur :"))
 
         # Liste des ordinateurs
-        self.grille = self.buttons_grid()
-        vbox.addLayout(self.grille)
+        vbox.addWidget(QLabel("Sélectionner un ordinateur :"))
 
+        self.grille = self.ordinateurs_buttons_grid()
+        vbox.addLayout(self.grille)
         vbox.addStretch(1)
+
+        # Liste des scénarios
+        vbox.addWidget(QLabel("Sélectionner un scénario :"))
+
+        self.scenarios = self.scenarios_buttons_grid()
+        vbox.addLayout(self.scenarios)
+        vbox.addStretch(2)
         
         # Formulaire d'ajout
         vbox.addWidget(self.form)
@@ -43,15 +53,35 @@ class Principale(QWidget):
         
         btn = OrdinateurButton(ordinateur)
         btn.clicked.connect(self.ordinateur_clicked)
+
         self.grille.autoAddWidget(btn)
         self.form.reset()
 
     def ordinateur_clicked(self):
-        ordinateur = self.sender().ordinateur
-        utils.test(ordinateur)
+        # Si un autre ordinateur était déjà sélectionné, on remet le bouton à son état initial
+        if (self.selected_ordinateur_btn):
+            self.selected_ordinateur_btn.setChecked(False)
+
+        sender = self.sender()
+        # Empêche de décocher un bouton
+        sender.setChecked(True)
+
+        self.selected_ordinateur_btn = sender
+
+    def scenario_clicked(self):
+        ordinateur = self.selected_ordinateur_btn.ordinateur
+        scenario = self.sender().scenario(ordinateur)
+        result = scenario.execute()
+
+        alert = QMessageBox()
+        alert.setWindowTitle("Réponse du scénario")
+        alert.setText(result.stdout)
+        alert.exec()
+
+        print(result.stdout)
 
     # Crée une boucle de boutons à partir de la liste des ordinateurs
-    def buttons_grid(self):
+    def ordinateurs_buttons_grid(self):
         grille=AutoGridLayout()
 
         for ordinateur in services.book.ordinateurs:
@@ -60,6 +90,17 @@ class Principale(QWidget):
             grille.autoAddWidget(btn)
 
         return grille
+        
+    def scenarios_buttons_grid(self):
+        grille=AutoGridLayout()
+
+        for scenario in scenarios.scenarios:
+            btn = ScenarioButton(scenario)
+            btn.clicked.connect(self.scenario_clicked)
+            grille.autoAddWidget(btn)
+
+        return grille
+
 
 class AutoGridLayout(QGridLayout):
     def __init__(self, cols = 2):
@@ -76,6 +117,16 @@ class OrdinateurButton(QPushButton):
         super().__init__(ordinateur.ip)
         # On stocke une copie complète de l'objet ordinateur 
         self.ordinateur = ordinateur
+
+        self.setCheckable(True)
+
+# Bouton de sélection d'un scénario
+class ScenarioButton(QPushButton):
+    def __init__(self, scenario):
+        # Le label sera l'adresse ip de l'ordinateur
+        super().__init__(scenario.label)
+        # On stocke une toutes les infos du scénario
+        self.scenario = scenario
 
 # Raccourci pour créer LineEdit avec placeholder
 class LineEditWithPlaceholder(QLineEdit):

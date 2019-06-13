@@ -63,13 +63,9 @@ class GetInterfaceDetailsScenario(Scenario):
 
         return result
 
+# Liste des classes correspondant à un scénario
+# Exemple d'instanciation à partir de cette liste : scenarios.GetHostnameScenario()
 scenarios = [
-    {
-        "label" : GetHostnameScenario.label,
-        "className" : GetHostnameScenario.__name__
-    },
-    {
-        "label" : GetInterfaceDetailsScenario.label,
-        "className" : GetInterfaceDetailsScenario.__name__
-    },
+    GetHostnameScenario,
+    GetInterfaceDetailsScenario
 ]
