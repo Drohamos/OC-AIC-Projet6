@@ -33,7 +33,7 @@ class GridIterator:
         return col
 
 def test(ordinateur):
-    scenario = scenarios.GetHostnameScenario(ordinateur)
+    scenario = scenarios.GetInterfaceDetailsScenario(ordinateur)
 
     result = scenario.run()
 
