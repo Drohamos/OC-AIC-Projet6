@@ -1,3 +1,6 @@
+# AICToolbox
+# Auteur : Robin BARKAS
+
 from fabric import Connection
 
 # Cache les avertissements de dépréciation envoyés par les dépendances de la librairie Fabric
