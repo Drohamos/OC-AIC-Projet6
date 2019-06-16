@@ -83,15 +83,9 @@ class Principale(QWidget):
     def partial_result(self):
         group = QGroupBox("Résultat")
 
-        vbox = QVBoxLayout()
+        self.console = ResultConsole()
 
-        vbox.addWidget(QLabel("Connexion à l'ordinateur..."))
-        vbox.addWidget(QLabel("Exécution de la commande..."))
-        vbox.addWidget(QLabel("OK"))
-
-        vbox.addStretch(1)
-
-        group.setLayout(vbox)
+        group.setLayout(self.console)
 
         return group
 
@@ -109,14 +103,12 @@ class Principale(QWidget):
     def clicked_btn_scenario(self):
         ordinateur = self.selected_ordinateur_btn.ordinateur
         scenario = self.sender().scenario(ordinateur)
+
+        self.console.new_run(scenario)
+
         result = scenario.execute()
 
-        alert = QMessageBox()
-        alert.setWindowTitle("Réponse du scénario")
-        alert.setText(result.stdout)
-        alert.exec()
-
-        print(result.stdout)
+        self.console.end_run(result.stdout)
 
     def clicked_btn_add_ordinateur(self):
         form = self.form_ordinateur
@@ -161,3 +153,25 @@ class FormOrdinateur(QHBoxLayout):
         self.edit_ip.setText("")
         self.edit_user.setText("")
         self.edit_name.setText("")
+
+class ResultConsole(QVBoxLayout):
+    def __init__(self):
+        super().__init__()
+        self.setUI()
+
+    def setUI(self):
+        self.prompt = QVBoxLayout()
+        self.addLayout(self.prompt)
+        self.addStretch(1)
+
+    def new_run(self, scenario):
+        self.prompt.addWidget(QLabel("Connexion à " + scenario.ordinateur.ssh_address))
+
+    def new_step(self):
+        self.prompt.addWidget(QLabel("Action effectuée"))
+
+    def end_run(self, result = None):
+        if (result):
+            self.prompt.addWidget(QLabel("Résultat : " + result))
+
+        self.prompt.addWidget(QLabel("Scénario terminé"))
