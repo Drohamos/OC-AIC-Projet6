@@ -29,15 +29,23 @@ class Principale(QWidget):
         base.addLayout(col_right)
 
         self.setLayout(base)
-        self.setGeometry(300,300,500,250)
+        self.setGeometry(300,300,800,600)
         self.setWindowTitle('Fenêtre principale')
 
         self.show()
 
     def partial_ordinateurs(self):
         group = QGroupBox("Ordinateur")
-        
         vbox = QVBoxLayout()
+
+        grille = AutoGridLayout()
+
+        for ordinateur in services.book.ordinateurs:
+            btn = OrdinateurButton(ordinateur)
+            #btn.clicked.connect(self.ordinateur_clicked)
+            grille.autoAddWidget(btn)
+
+        vbox.addLayout(grille)     
 
         group.setLayout(vbox)
 
@@ -47,6 +55,15 @@ class Principale(QWidget):
         group = QGroupBox("Scénario")
         
         vbox = QVBoxLayout()
+
+        grille = AutoGridLayout()
+
+        for scenario in scenarios.scenarios:
+            btn = ScenarioButton(scenario)
+            #btn.clicked.connect(self.scenario_clicked)
+            grille.autoAddWidget(btn)
+
+        vbox.addLayout(grille)    
 
         group.setLayout(vbox)
 
