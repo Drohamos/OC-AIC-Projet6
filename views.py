@@ -1,15 +1,69 @@
 # AICToolbox
 # Auteur : Robin BARKAS
 
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox
 
 import models
 import services
 import utils
 import scenarios
 
-# Fenêtre principale : sélection du/des ordinateurs
 class Principale(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.form = FormOrdinateur()
+        self.selected_ordinateur_btn = None
+        self.setUI()
+
+    def setUI(self):
+        base = QHBoxLayout()
+
+        col_left = QVBoxLayout()
+        col_right = QVBoxLayout()
+
+        col_left.addWidget(self.partial_ordinateurs())
+        col_left.addWidget(self.partial_scenarios())
+        col_right.addWidget(self.partial_result())
+
+        base.addLayout(col_left)
+        base.addLayout(col_right)
+
+        self.setLayout(base)
+        self.setGeometry(300,300,500,250)
+        self.setWindowTitle('Fenêtre principale')
+
+        self.show()
+
+    def partial_ordinateurs(self):
+        group = QGroupBox("Ordinateur")
+        
+        vbox = QVBoxLayout()
+
+        group.setLayout(vbox)
+
+        return group
+
+    def partial_scenarios(self):
+        group = QGroupBox("Scénario")
+        
+        vbox = QVBoxLayout()
+
+        group.setLayout(vbox)
+
+        return group
+
+    def partial_result(self):
+        group = QGroupBox("Résultat")
+        
+        vbox = QVBoxLayout()
+
+        group.setLayout(vbox)
+
+        return group
+    
+
+# Fenêtre principale : sélection du/des ordinateurs
+class Principale_Old(QWidget):
     def __init__(self):
         super().__init__()
         self.form = FormOrdinateur()
@@ -22,8 +76,11 @@ class Principale(QWidget):
         # Liste des ordinateurs
         vbox.addWidget(QLabel("Sélectionner un ordinateur :"))
 
+        ordinateurGroupBox = QGroupBox()
+
         self.grille = self.ordinateurs_buttons_grid()
-        vbox.addLayout(self.grille)
+        ordinateurGroupBox.setLayout(self.grille)
+        vbox.addWidget(ordinateurGroupBox)
         vbox.addStretch(1)
 
         # Liste des scénarios
