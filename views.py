@@ -11,7 +11,7 @@ import scenarios
 class Principale(QWidget):
     def __init__(self):
         super().__init__()
-        self.form = FormOrdinateur()
+        self.form_ordinateur = FormOrdinateur()
         self.selected_ordinateur_btn = None
         self.setUI()
 
@@ -25,8 +25,8 @@ class Principale(QWidget):
         col_left.addWidget(self.partial_scenarios())
         col_right.addWidget(self.partial_result())
 
-        base.addLayout(col_left)
-        base.addLayout(col_right)
+        base.addLayout(col_left, 4)
+        base.addLayout(col_right, 3)
 
         self.setLayout(base)
         self.setGeometry(300,300,800,600)
@@ -38,14 +38,23 @@ class Principale(QWidget):
         group = QGroupBox("Ordinateur")
         vbox = QVBoxLayout()
 
-        grille = AutoGridLayout()
+        self.grille_ordinateurs = utils.AutoGridLayout()
 
         for ordinateur in services.book.ordinateurs:
-            btn = OrdinateurButton(ordinateur)
-            #btn.clicked.connect(self.ordinateur_clicked)
-            grille.autoAddWidget(btn)
+            btn = utils.OrdinateurButton(ordinateur)
+            btn.clicked.connect(self.clicked_btn_ordinateur)
+            self.grille_ordinateurs.autoAddWidget(btn)
 
-        vbox.addLayout(grille)     
+        vbox.addLayout(self.grille_ordinateurs)
+        vbox.addStretch(1)
+        
+        self.form_ordinateur = FormOrdinateur()
+        vbox.addLayout(self.form_ordinateur)
+
+        btn_add_ordinateur = QPushButton("Ajouter")
+        btn_add_ordinateur.clicked.connect(self.clicked_btn_add_ordinateur)
+        vbox.addWidget(btn_add_ordinateur)
+        vbox.addStretch(2)
 
         group.setLayout(vbox)
 
@@ -56,14 +65,16 @@ class Principale(QWidget):
         
         vbox = QVBoxLayout()
 
-        grille = AutoGridLayout()
+        grille = utils.AutoGridLayout()
 
         for scenario in scenarios.scenarios:
-            btn = ScenarioButton(scenario)
-            #btn.clicked.connect(self.scenario_clicked)
+            btn = utils.ScenarioButton(scenario)
+            btn.clicked.connect(self.clicked_btn_scenario)
             grille.autoAddWidget(btn)
 
-        vbox.addLayout(grille)    
+        vbox.addLayout(grille)
+
+        vbox.addStretch(1)
 
         group.setLayout(vbox)
 
@@ -74,10 +85,49 @@ class Principale(QWidget):
         
         vbox = QVBoxLayout()
 
+        vbox.addWidget(QLabel("Connexion à l'ordinateur..."))
+        vbox.addWidget(QLabel("Exécution de la commande..."))
+        vbox.addWidget(QLabel("OK"))
+
+        vbox.addStretch(1)
+
         group.setLayout(vbox)
 
         return group
-    
+
+    def clicked_btn_ordinateur(self):
+        # Si un autre ordinateur était déjà sélectionné, on remet le bouton à son état initial
+        if (self.selected_ordinateur_btn):
+            self.selected_ordinateur_btn.setChecked(False)
+
+        sender = self.sender()
+        # Empêche de décocher un bouton
+        sender.setChecked(True)
+
+        self.selected_ordinateur_btn = sender
+
+    def clicked_btn_scenario(self):
+        ordinateur = self.selected_ordinateur_btn.ordinateur
+        scenario = self.sender().scenario(ordinateur)
+        result = scenario.execute()
+
+        alert = QMessageBox()
+        alert.setWindowTitle("Réponse du scénario")
+        alert.setText(result.stdout)
+        alert.exec()
+
+        print(result.stdout)
+
+    def clicked_btn_add_ordinateur(self):
+        form = self.form_ordinateur
+        ordinateur = form.to_ordinateur()
+        services.book.add(ordinateur)
+        
+        btn = utils.OrdinateurButton(ordinateur)
+        btn.clicked.connect(self.clicked_btn_ordinateur)
+
+        self.grille_ordinateurs.autoAddWidget(btn)
+        form.reset()    
 
 # Fenêtre principale : sélection du/des ordinateurs
 class Principale_Old(QWidget):
@@ -125,7 +175,7 @@ class Principale_Old(QWidget):
         ordinateur = self.form.to_ordinateur()
         services.book.add(ordinateur)
         
-        btn = OrdinateurButton(ordinateur)
+        btn = utils.OrdinateurButton(ordinateur)
         btn.clicked.connect(self.ordinateur_clicked)
 
         self.grille.autoAddWidget(btn)
@@ -156,77 +206,40 @@ class Principale_Old(QWidget):
 
     # Crée une boucle de boutons à partir de la liste des ordinateurs
     def ordinateurs_buttons_grid(self):
-        grille=AutoGridLayout()
+        grille=utils.AutoGridLayout()
 
         for ordinateur in services.book.ordinateurs:
-            btn = OrdinateurButton(ordinateur)
+            btn = utils.OrdinateurButton(ordinateur)
             btn.clicked.connect(self.ordinateur_clicked)
             grille.autoAddWidget(btn)
 
         return grille
         
     def scenarios_buttons_grid(self):
-        grille=AutoGridLayout()
+        grille=utils.AutoGridLayout()
 
         for scenario in scenarios.scenarios:
-            btn = ScenarioButton(scenario)
+            btn = utils.ScenarioButton(scenario)
             btn.clicked.connect(self.scenario_clicked)
             grille.autoAddWidget(btn)
 
         return grille
 
-
-class AutoGridLayout(QGridLayout):
-    def __init__(self, cols = 2):
-        super().__init__()
-        self.iterator = utils.GridIterator(cols)
-
-    def autoAddWidget(self, widget):
-        self.addWidget(widget, self.iterator.row(), self.iterator.col())
-
-# Bouton de connexion à un ordinateur
-class OrdinateurButton(QPushButton):
-    def __init__(self, ordinateur):
-        # Le label sera l'adresse ip de l'ordinateur
-        super().__init__(ordinateur.ip)
-        # On stocke une copie complète de l'objet ordinateur 
-        self.ordinateur = ordinateur
-
-        self.setCheckable(True)
-
-# Bouton de sélection d'un scénario
-class ScenarioButton(QPushButton):
-    def __init__(self, scenario):
-        # Le label sera l'adresse ip de l'ordinateur
-        super().__init__(scenario.label)
-        # On stocke une toutes les infos du scénario
-        self.scenario = scenario
-
-# Raccourci pour créer LineEdit avec placeholder
-class LineEditWithPlaceholder(QLineEdit):
-    def __init__(self, placeholder):
-        super().__init__()
-        self.setPlaceholderText(placeholder)
-
 # Formulaire d'ajout/modification d'un ordinateur
 # Le bouton de validation n'est pas inclus car géré par fenêtre parente
-class FormOrdinateur(QWidget):
-    edit_ip   = LineEditWithPlaceholder("Adresse IP*")
-    edit_user = LineEditWithPlaceholder("Utilisateur")
-    edit_name = LineEditWithPlaceholder("Libellé")
+class FormOrdinateur(QHBoxLayout):
+    edit_ip   = utils.LineEditWithPlaceholder("Adresse IP*")
+    edit_user = utils.LineEditWithPlaceholder("Utilisateur")
+    edit_name = utils.LineEditWithPlaceholder("Libellé")
 
     def __init__(self):
         super().__init__()
         self.setUI()
     
-    def setUI(self):
-        hbox = QHBoxLayout()
-        
-        hbox.addWidget(self.edit_ip)
-        hbox.addWidget(self.edit_user)
-        hbox.addWidget(self.edit_name)
-
-        self.setLayout(hbox)
+    def setUI(self):        
+        self.addWidget(self.edit_ip)
+        self.addWidget(self.edit_user)
+        self.addWidget(self.edit_name)
 
     # Instancie un objet Ordinateur à partir de l'état actuel du formulaire
     def to_ordinateur(self):

@@ -1,6 +1,7 @@
 # AICToolbox
 # Auteur : Robin BARKAS
 
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox
 from fabric import Connection
 import scenarios
 
@@ -40,3 +41,35 @@ def test(ordinateur):
     print("Résultat : " + str(result.stdout))
     print("Code retour : " + str(result.return_code))
     print("Code erreur : " + str(result.stderr))
+
+class AutoGridLayout(QGridLayout):
+    def __init__(self, cols = 2):
+        super().__init__()
+        self.iterator = GridIterator(cols)
+
+    def autoAddWidget(self, widget):
+        self.addWidget(widget, self.iterator.row(), self.iterator.col())
+
+# Bouton de connexion à un ordinateur
+class OrdinateurButton(QPushButton):
+    def __init__(self, ordinateur):
+        # Le label sera l'adresse ip de l'ordinateur
+        super().__init__(ordinateur.ip)
+        # On stocke une copie complète de l'objet ordinateur 
+        self.ordinateur = ordinateur
+
+        self.setCheckable(True)
+
+# Bouton de sélection d'un scénario
+class ScenarioButton(QPushButton):
+    def __init__(self, scenario):
+        # Le label sera l'adresse ip de l'ordinateur
+        super().__init__(scenario.label)
+        # On stocke une toutes les infos du scénario
+        self.scenario = scenario
+
+# Raccourci pour créer LineEdit avec placeholder
+class LineEditWithPlaceholder(QLineEdit):
+    def __init__(self, placeholder):
+        super().__init__()
+        self.setPlaceholderText(placeholder)
