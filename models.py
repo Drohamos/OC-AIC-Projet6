@@ -49,10 +49,10 @@ class Ordinateur:
         name = name.strip()
         self.__name = default_if_empty(name, self.DEFAULT_NAME)
 
-# Si chaine de caractères vide, on renvoie sa valeur par défaut
 def check_is_str(var):
     return (isinstance(var, str))
 
+# Si chaine de caractères vide, on renvoie sa valeur par défaut
 def default_if_empty(str_, default):
     if (check_is_empty(str_)):
         return default
