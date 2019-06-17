@@ -16,17 +16,20 @@ class Principale(QWidget):
         self.setUI()
 
     def setUI(self):
-        base = QHBoxLayout()
+        base = QVBoxLayout()
+        bottom = QHBoxLayout()
 
         col_left = QVBoxLayout()
         col_right = QVBoxLayout()
 
         col_left.addWidget(self.partial_ordinateurs())
-        col_left.addWidget(self.partial_scenarios())
-        col_right.addWidget(self.partial_result())
+        col_right.addWidget(self.partial_scenarios())
 
-        base.addLayout(col_left, 4)
-        base.addLayout(col_right, 3)
+        bottom.addLayout(col_left, 1)
+        bottom.addLayout(col_right, 1)
+
+        base.addLayout(bottom)
+        base.addWidget(self.partial_result())
 
         self.setLayout(base)
         self.setGeometry(300,300,800,600)
@@ -35,7 +38,7 @@ class Principale(QWidget):
         self.show()
 
     def partial_ordinateurs(self):
-        group = QGroupBox("Ordinateur")
+        group = QGroupBox("Sélectionner un poste")
         vbox = QVBoxLayout()
 
         self.grille_ordinateurs = utils.AutoGridLayout()
@@ -107,11 +110,11 @@ class Principale(QWidget):
         self.console.new_run(scenario)
 
         try:
-        result = scenario.execute()
+            result = scenario.execute()
         except Exception as err:
             self.console.new_error(err)
         else:
-        self.console.end_run(result.stdout)
+            self.console.end_run(result.stdout)
 
     def clicked_btn_add_ordinateur(self):
         form = self.form_ordinateur
