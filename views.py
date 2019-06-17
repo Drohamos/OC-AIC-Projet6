@@ -106,8 +106,11 @@ class Principale(QWidget):
 
         self.console.new_run(scenario)
 
+        try:
         result = scenario.execute()
-
+        except Exception as err:
+            self.console.new_error(err)
+        else:
         self.console.end_run(result.stdout)
 
     def clicked_btn_add_ordinateur(self):
@@ -169,6 +172,14 @@ class ResultConsole(QVBoxLayout):
 
     def new_step(self):
         self.prompt.addWidget(QLabel("Action effectuée"))
+
+    def new_error(self, err):
+        print(err)
+
+        label = QLabel("Erreur")
+        label.setStyleSheet("color: red")
+
+        self.prompt.addWidget(label)
 
     def end_run(self, result = None):
         if (result):
