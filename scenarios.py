@@ -40,6 +40,10 @@ class Scenario:
         print("Fermeture de la connexion avec " + self.ordinateur.ssh_address)
         self.conec.close()
 
+class ScenarioWithParams(Scenario):
+    def __init__(self):
+        super().__init__()
+
 class GetHostnameScenario(Scenario):
     label = "Récupérer hostname"
 
@@ -50,7 +54,7 @@ class GetHostnameScenario(Scenario):
 
         return result
 
-class GetInterfaceDetailsScenario(Scenario):
+class GetInterfaceDetailsScenario(ScenarioWithParams):
     label = "Afficher détails interface réseau"
 
     @property
@@ -66,9 +70,20 @@ class GetInterfaceDetailsScenario(Scenario):
 
         return result
 
+class CreateSessionScenario(ScenarioWithParams):
+    label = "Créer une session"
+
+    def execute(self):
+        result = self.conec.run('hostname -s', hide=True)
+
+        self.close()
+
+        return result
+
 # Liste des classes correspondant à un scénario
 # Exemple d'instanciation à partir de cette liste : scenarios.GetHostnameScenario()
 scenarios = [
     GetHostnameScenario,
-    GetInterfaceDetailsScenario
+    GetInterfaceDetailsScenario,
+    CreateSessionScenario
 ]
