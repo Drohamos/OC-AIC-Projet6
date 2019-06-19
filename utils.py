@@ -3,7 +3,6 @@
 
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox
 from fabric import Connection
-import scenarios
 
 # Permet de générer l'incrémentation du numéro de ligne/colonne
 # Utilisé pour générer une grille automatiquement à partir d'une liste
@@ -33,9 +32,7 @@ class GridIterator:
 
         return col
 
-def test(ordinateur):
-    scenario = scenarios.GetInterfaceDetailsScenario(ordinateur)
-
+def test(ordinateur, scenario):
     result = scenario.run()
 
     print("Résultat : " + str(result.stdout))
