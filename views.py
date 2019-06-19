@@ -7,6 +7,7 @@ import models
 import services
 import utils
 import scenarios
+import scenarios_forms
 
 class Principale(QWidget):
     def __init__(self):
@@ -66,6 +67,18 @@ class Principale(QWidget):
     def partial_scenarios(self):
         group = QGroupBox("Scénario")
         vbox = QVBoxLayout()
+
+        self.form_scenario = self.partial_scenarios_form()
+
+        vbox.addLayout(self.partial_scenarios_list())
+        vbox.addStretch(1)
+        vbox.addWidget(self.form_scenario)
+
+        group.setLayout(vbox)
+
+        return group
+
+    def partial_scenarios_list(self):
         grille = utils.AutoGridLayout()
 
         for scenario in scenarios.scenarios:
@@ -73,15 +86,19 @@ class Principale(QWidget):
             btn.clicked.connect(self.clicked_btn_scenario)
             grille.autoAddWidget(btn)
 
-        vbox.addLayout(grille)
+        return grille
 
-        vbox.addStretch(1)
+    # Label + conteneur formulaire scénario
+    def partial_scenarios_form(self):
+        frame = QFrame()
+        vbox = QVBoxLayout()
 
         vbox.addWidget(QLabel("Paramètres du scénario"))
+        vbox.addWidget(scenarios_forms.FormScenario(["test"]))
 
-        group.setLayout(vbox)
+        frame.setLayout(vbox)
 
-        return group
+        return frame
 
     def partial_result(self):
         group = QGroupBox("Résultat")
@@ -162,24 +179,6 @@ class FormOrdinateur(QHBoxLayout):
         self.edit_ip.setText("")
         self.edit_user.setText("")
         self.edit_name.setText("")
-
-class FormScenario(QFrame):
-    def __init__(self, fields):
-        super().__init__()
-        self.setUI(fields)
-
-    def setUI(self, fields):
-        self.hbox = QHBoxLayout()
-        self.setLayout(self.hbox)
-
-        for field in fields:
-            self.hbox.addWidget(utils.LineEditWithPlaceholder("Interface (ex : ens33)"))
-    
-    def add_line_edit (self, placeholder = None):
-        line_edit = QLineEdit()
-
-        if not (placeholder is None):
-            line_edit.setPlaceholderText(placeholder)
 
 class ResultConsole(QVBoxLayout):
     def __init__(self):
