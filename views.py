@@ -107,14 +107,7 @@ class Principale(QWidget):
         ordinateur = self.selected_ordinateur_btn.ordinateur
         scenario = self.sender().scenario(ordinateur)
 
-        self.console.new_run(scenario)
-
-        try:
-            result = scenario.execute()
-        except Exception as err:
-            self.console.new_error(err)
-        else:
-            self.console.end_run(result.stdout)
+        self.run_scenario(scenario)
 
     def clicked_btn_add_ordinateur(self):
         form = self.form_ordinateur
@@ -126,6 +119,16 @@ class Principale(QWidget):
 
         self.grille_ordinateurs.autoAddWidget(btn)
         form.reset()
+
+    def run_scenario(self, scenario):
+        self.console.new_run(scenario)
+
+        try:
+            result = scenario.execute()
+        except Exception as err:
+            self.console.new_error(err)
+        else:
+            self.console.end_run(result.stdout)
 
 # Formulaire d'ajout/modification d'un ordinateur
 # Le bouton de validation n'est pas inclus car géré par fenêtre parente
