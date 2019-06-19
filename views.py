@@ -65,9 +65,7 @@ class Principale(QWidget):
 
     def partial_scenarios(self):
         group = QGroupBox("Scénario")
-
         vbox = QVBoxLayout()
-
         grille = utils.AutoGridLayout()
 
         for scenario in scenarios.scenarios:
@@ -78,6 +76,8 @@ class Principale(QWidget):
         vbox.addLayout(grille)
 
         vbox.addStretch(1)
+
+        vbox.addWidget(QLabel("Paramètres du scénario"))
 
         group.setLayout(vbox)
 
