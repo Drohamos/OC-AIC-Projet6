@@ -2,14 +2,36 @@
 # Auteur : Robin BARKAS
 
 import models
+import pickle
 
 class OrdinateurBookmarker:
+    FILE_PATH = "bookmarks.cfg"
+
     def __init__(self):
         self.load()
 
-    # @todo implémenter récupération dans fichier
     def load(self):
-        self.loadMocks()
+        self.ordinateurs = self.load_from_file()
+
+    def load_from_file(self):
+        ordinateurs = []
+
+        try:
+            # Ouverture du fichier en lecture
+            file = open(self.FILE_PATH, "rb")
+        # Il est normal que le fichier n'existe pas au premier lancement du logiciel,
+        # on ignore donc l'exception "fichier non trouvé"
+        except FileNotFoundError:
+            pass
+        else:
+            try:
+                ordinateurs = pickle.load(file)
+            except EOFError:
+                pass
+            finally:
+                file.close()
+
+        return ordinateurs
 
     def loadMocks(self):
         self.ordinateurs = [
@@ -29,10 +51,16 @@ class OrdinateurBookmarker:
 
     def add(self, ordinateur):
         self.ordinateurs.append(ordinateur)
+        self.save(self.ordinateurs)
 
     # @todo implémenter sauvegarde dans fichier
-    def save(self):
+    def save(self, ordinateurs):
+        self.save_to_file(ordinateurs)
         print("Lise des ordinateurs sauvegardée")
+
+    def save_to_file(self, ordinateurs):
+        file = open(self.FILE_PATH, "wb")
+        pickle.dump(ordinateurs, file)
 
 # =====================
 # Instances de services

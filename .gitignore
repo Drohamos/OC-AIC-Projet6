@@ -1,4 +1,7 @@
 .vscode/*
 !.vscode/launch.json
 !.vscode/settings.json
+
 __pycache__/
+
+bookmarks.cfg
