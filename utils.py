@@ -19,12 +19,12 @@ class GridIterator:
         if (self.currentCol == self.numCols):
             self.currentRow += 1
             self.currentCol = 1
-        else: 
+        else:
             self.currentCol += 1
 
     def row(self):
         return self.currentRow
-    
+
     def col(self):
         col = self.currentCol
 
@@ -39,6 +39,8 @@ def test(ordinateur, scenario):
     print("Code retour : " + str(result.return_code))
     print("Code erreur : " + str(result.stderr))
 
+# Permet de créer une grille avec un nombre fixé de colonnes,
+# les numéros de ligne/colonne sont générés automatiquement
 class AutoGridLayout(QGridLayout):
     def __init__(self, cols = 2):
         super().__init__()
@@ -52,7 +54,7 @@ class OrdinateurButton(QPushButton):
     def __init__(self, ordinateur):
         # Le label sera l'adresse ip de l'ordinateur
         super().__init__(ordinateur.ip)
-        # On stocke une copie complète de l'objet ordinateur 
+        # On stocke une copie complète de l'objet ordinateur
         self.ordinateur = ordinateur
 
         self.setCheckable(True)

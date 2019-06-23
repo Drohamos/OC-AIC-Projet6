@@ -33,8 +33,9 @@ class OrdinateurBookmarker:
 
         return ordinateurs
 
-    def loadMocks(self):
-        self.ordinateurs = [
+    # Données fictives
+    def load_from_mocks(self):
+        return [
             # VM Linuxlocal
             models.Ordinateur("192.168.1.156", "linuxlocal"),
             # VM Linuxlocal
@@ -49,14 +50,14 @@ class OrdinateurBookmarker:
             models.Ordinateur("192.168.1.500"),
         ]
 
+    # Ajoute un ordinateur à la liste + dans le fichier de config
     def add(self, ordinateur):
         self.ordinateurs.append(ordinateur)
         self.save(self.ordinateurs)
 
-    # @todo implémenter sauvegarde dans fichier
+    # Méthode générique pour persister la liste des ordinateurs
     def save(self, ordinateurs):
         self.save_to_file(ordinateurs)
-        print("Lise des ordinateurs sauvegardée")
 
     def save_to_file(self, ordinateurs):
         file = open(self.FILE_PATH, "wb")

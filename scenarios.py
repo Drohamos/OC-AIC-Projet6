@@ -8,6 +8,7 @@ import warnings
 import cryptography
 warnings.simplefilter("ignore", cryptography.utils.CryptographyDeprecationWarning)
 
+# Classe scenario générique, ne devrait pas être utilisée directement
 class Scenario:
     def __init__(self, ordinateur):
         self.ordinateur = ordinateur
@@ -80,7 +81,7 @@ class CreateSessionScenario(ScenarioWithParams):
 
         return result
 
-# Liste des classes correspondant à un scénario
+# Liste des classes correspondant à un scénario, utilisée pour générer les boutons
 # Exemple d'instanciation à partir de cette liste : scenarios.GetHostnameScenario()
 scenarios = [
     GetHostnameScenario,

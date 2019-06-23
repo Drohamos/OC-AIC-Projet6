@@ -16,20 +16,24 @@ class Principale(QWidget):
         self.selected_ordinateur_btn = None
         self.setUI()
 
+    # Génère l'interface utilisateur
     def setUI(self):
         base = QVBoxLayout()
-        bottom = QHBoxLayout()
+        top = QHBoxLayout()
 
-        col_left = QVBoxLayout()
-        col_right = QVBoxLayout()
+        # Moitié haute de la fenêtre : 2 colonnes (liste des ordinateurs; liste des scénarios)
+        col_top_left = QVBoxLayout()
+        col_top_right = QVBoxLayout()
 
-        col_left.addWidget(self.partial_ordinateurs())
-        col_right.addWidget(self.partial_scenarios())
+        col_top_left.addWidget(self.partial_ordinateurs())
+        col_top_right.addWidget(self.partial_scenarios())
 
-        bottom.addLayout(col_left, 1)
-        bottom.addLayout(col_right, 1)
+        top.addLayout(col_top_left, 1)
+        top.addLayout(col_top_right, 1)
 
-        base.addLayout(bottom)
+        base.addLayout(top)
+
+        # Moitié basse : Log récapitulatif déroulement scénario
         base.addWidget(self.partial_result())
 
         self.setLayout(base)
@@ -38,10 +42,12 @@ class Principale(QWidget):
 
         self.show()
 
+    # Colonne de gauche
     def partial_ordinateurs(self):
         group = QGroupBox("Sélectionner un poste")
         vbox = QVBoxLayout()
 
+        # Liste des ordinateurs (boutons)
         self.grille_ordinateurs = utils.AutoGridLayout()
 
         for ordinateur in services.book.ordinateurs:
@@ -52,6 +58,7 @@ class Principale(QWidget):
         vbox.addLayout(self.grille_ordinateurs)
         vbox.addStretch(1)
 
+        # Formulaire ajout d'un ordinateur
         self.form_ordinateur = FormOrdinateur()
         vbox.addLayout(self.form_ordinateur)
 
@@ -64,6 +71,7 @@ class Principale(QWidget):
 
         return group
 
+    # Colonne de droite
     def partial_scenarios(self):
         group = QGroupBox("Scénario")
         vbox = QVBoxLayout()
@@ -78,6 +86,7 @@ class Principale(QWidget):
 
         return group
 
+    # Liste des scénarios
     def partial_scenarios_list(self):
         grille = utils.AutoGridLayout()
 
@@ -100,6 +109,7 @@ class Principale(QWidget):
 
         return frame
 
+    # Moitié basse : log déroulement scénario
     def partial_result(self):
         group = QGroupBox("Résultat")
 
@@ -175,11 +185,15 @@ class FormOrdinateur(QHBoxLayout):
         self.edit_user.setText(ordinateur.user)
         self.edit_name.setText(ordinateur.name)
 
+    # Réinitialise (vide) les champs du formulaire
     def reset(self):
         self.edit_ip.setText("")
         self.edit_user.setText("")
         self.edit_name.setText("")
 
+# Console de résultat. Elle affiche le détail du déroulement du scénario
+# sous forme de lignes (similaire à un terminal)
+# Chaque méthode new_* correspond à un type de ligne :
 class ResultConsole(QVBoxLayout):
     def __init__(self):
         super().__init__()
@@ -190,12 +204,15 @@ class ResultConsole(QVBoxLayout):
         self.addLayout(self.prompt)
         self.addStretch(1)
 
+    # Début d'un scénario
     def new_run(self, scenario):
         self.prompt.addWidget(QLabel("Connexion à " + scenario.ordinateur.ssh_address))
 
+    # Réalisation d'une nouvelle étape du scénario
     def new_step(self):
         self.prompt.addWidget(QLabel("Action effectuée"))
 
+    # Affichage d'une erreur (texte rouge)
     def new_error(self, err):
         print(err)
 
@@ -204,6 +221,7 @@ class ResultConsole(QVBoxLayout):
 
         self.prompt.addWidget(label)
 
+    # Fin du scénario, affichage du résultat s'il y en a un
     def end_run(self, result = None):
         if (result):
             self.prompt.addWidget(QLabel("Résultat : " + result))
