@@ -10,17 +10,28 @@ import utils
 class FormScenario(QFrame):
     def __init__(self, fields):
         super().__init__()
+        self.fields = []
         self.setUI(fields)
 
     def setUI(self, fields):
         self.hbox = QHBoxLayout()
-        self.setLayout(self.hbox)
 
         for field in fields:
-            self.hbox.addWidget(utils.LineEditWithPlaceholder("Interface (ex : ens33)"))
+            lineEdit = utils.LineEditWithPlaceholder(field)
+            self.fields.append(lineEdit)
+            self.hbox.addWidget(lineEdit)
+
+        self.setLayout(self.hbox)
 
     def add_line_edit (self, placeholder = None):
         line_edit = QLineEdit()
 
         if not (placeholder is None):
             line_edit.setPlaceholderText(placeholder)
+
+    def get_values(self):
+        values = []
+        for field in self.fields:
+            values.append(field.text())
+
+        return values

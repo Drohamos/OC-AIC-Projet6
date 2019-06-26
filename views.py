@@ -76,11 +76,11 @@ class Principale(QWidget):
         group = QGroupBox("Scénario")
         vbox = QVBoxLayout()
 
-        self.form_scenario = self.partial_scenarios_form()
+        form_scenario = self.partial_scenarios_form()
 
         vbox.addLayout(self.partial_scenarios_list())
         vbox.addStretch(1)
-        vbox.addWidget(self.form_scenario)
+        vbox.addWidget(form_scenario)
 
         group.setLayout(vbox)
 
@@ -103,7 +103,15 @@ class Principale(QWidget):
         vbox = QVBoxLayout()
 
         vbox.addWidget(QLabel("Paramètres du scénario"))
-        vbox.addWidget(scenarios_forms.FormScenario(["test"]))
+
+        self.form_scenario = scenarios_forms.FormScenario(["test", "supertest"])
+
+        vbox.addWidget(self.form_scenario)
+
+        btn_execute = QPushButton("Test")
+        btn_execute.clicked.connect(self.clicked_btn_execute)
+
+        vbox.addWidget(btn_execute)
 
         frame.setLayout(vbox)
 
@@ -135,6 +143,9 @@ class Principale(QWidget):
         scenario = self.sender().scenario(ordinateur)
 
         self.run_scenario(scenario)
+
+    def clicked_btn_execute(self):
+        print(self.form_scenario.get_values())
 
     def clicked_btn_add_ordinateur(self):
         form = self.form_ordinateur
