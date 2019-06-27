@@ -8,6 +8,8 @@ import warnings
 import cryptography
 warnings.simplefilter("ignore", cryptography.utils.CryptographyDeprecationWarning)
 
+import forms
+
 # Classe scenario générique, ne devrait pas être utilisée directement
 class Scenario:
     def __init__(self, ordinateur):
@@ -42,8 +44,11 @@ class Scenario:
         self.conec.close()
 
 class ScenarioWithParams(Scenario):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, ordinateur):
+        super().__init__(ordinateur)
+
+    def form(self):
+        raise NotImplementedError("La méthode form() de ce scénario n'a pas été implémentée")
 
 class GetHostnameScenario(Scenario):
     label = "Récupérer hostname"
@@ -57,13 +62,10 @@ class GetHostnameScenario(Scenario):
 
 class GetInterfaceDetailsScenario(ScenarioWithParams):
     label = "Afficher détails interface réseau"
-
-    @property
-    def interface(self):
-        return "ens33"
+    form  = forms.FormScenario(["Interface réseau"])
 
     def execute(self):
-        interface = self.interface
+        interface = self.form.fields[0].text()
 
         result = self.conec.run('ip addr show ' + interface, hide=True)
 
@@ -73,6 +75,7 @@ class GetInterfaceDetailsScenario(ScenarioWithParams):
 
 class CreateSessionScenario(ScenarioWithParams):
     label = "Créer une session"
+    form  = forms.FormScenario(["Nom d'utilisateur", "Mot de passe"])
 
     def execute(self):
         result = self.conec.run('hostname -s', hide=True)

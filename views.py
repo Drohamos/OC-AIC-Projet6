@@ -7,7 +7,7 @@ import models
 import services
 import utils
 import scenarios
-import scenarios_forms
+import forms
 
 class Principale(QWidget):
     def __init__(self):
@@ -104,9 +104,8 @@ class Principale(QWidget):
 
         vbox.addWidget(QLabel("Paramètres du scénario"))
 
-        self.form_scenario = scenarios_forms.FormScenario(["test", "supertest"])
-
-        vbox.addWidget(self.form_scenario)
+        self.form_scenario_container = QGroupBox("Paramètres")
+        vbox.addWidget(self.form_scenario_container)
 
         btn_execute = QPushButton("Test")
         btn_execute.clicked.connect(self.clicked_btn_execute)
@@ -141,6 +140,8 @@ class Principale(QWidget):
     def clicked_btn_scenario(self):
         ordinateur = self.selected_ordinateur_btn.ordinateur
         scenario = self.sender().scenario(ordinateur)
+
+        self.form_scenario_container.setLayout(scenario.form.hbox)
 
         self.run_scenario(scenario)
 
