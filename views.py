@@ -1,7 +1,7 @@
 # AICToolbox
 # Auteur : Robin BARKAS
 
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox, QFrame
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox, QFrame, QStackedLayout
 
 import models
 import services
@@ -104,8 +104,8 @@ class Principale(QWidget):
 
         vbox.addWidget(QLabel("Paramètres du scénario"))
 
-        self.form_scenario_container = QGroupBox("Paramètres")
-        vbox.addWidget(self.form_scenario_container)
+        self.form_scenario_container = QStackedLayout()
+        vbox.addLayout(self.form_scenario_container)
 
         btn_execute = QPushButton("Test")
         btn_execute.clicked.connect(self.clicked_btn_execute)
@@ -141,7 +141,8 @@ class Principale(QWidget):
         ordinateur = self.selected_ordinateur_btn.ordinateur
         scenario = self.sender().scenario(ordinateur)
 
-        self.form_scenario_container.setLayout(scenario.form.hbox)
+        self.form_scenario_container.addWidget(scenario.form)
+        self.form_scenario_container.setCurrentIndex(1)
 
         self.run_scenario(scenario)
 
