@@ -99,7 +99,7 @@ class Principale(QWidget):
 
     # Label + conteneur formulaire scénario
     def partial_scenarios_form(self):
-        frame = QFrame()
+        self.form_scenario_frame = QFrame()
         vbox = QVBoxLayout()
 
         vbox.addWidget(QLabel("Paramètres du scénario"))
@@ -112,9 +112,9 @@ class Principale(QWidget):
 
         vbox.addWidget(btn_execute)
 
-        frame.setLayout(vbox)
+        self.form_scenario_frame.setLayout(vbox)
 
-        return frame
+        return self.form_scenario_frame
 
     # Moitié basse : log déroulement scénario
     def partial_result(self):
@@ -141,8 +141,12 @@ class Principale(QWidget):
         ordinateur = self.selected_ordinateur_btn.ordinateur
         scenario = self.sender().scenario(ordinateur)
 
-        self.form_scenario_container.addWidget(scenario.form)
-        self.form_scenario_container.setCurrentIndex(1)
+        if (scenario.form):
+            self.form_scenario_frame.show()
+            self.form_scenario_container.addWidget(scenario.form)
+            self.form_scenario_container.setCurrentIndex(1)
+        else:
+            self.form_scenario_frame.hide()
 
         self.run_scenario(scenario)
 
