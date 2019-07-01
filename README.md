@@ -9,7 +9,7 @@ Le langage Python est disponible au téléchargement à l’adresse suivante : [
 
 Une fois le langage Python installé, il est possible de télécharger la librairie PyQt via le gestionnaire de paquets _pip_. Cela se fait avec la commande suivante :
 
->pip install PyQt5
+> pip install PyQt5
 
 ### Fabric
 
@@ -49,6 +49,7 @@ La section résultat donne un retour d’informations sur le scénario en cours 
 ## Ajout d'un client
 
 Au premier démarrage du logiciel, la liste des postes clients sera vide. Pour en ajouter un, utiliser le formulaire en bas de la section « Sélectionner un poste » (encadré vert) :
+
 ![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/cible-ajout.png)
 
 Le formulaire demande trois informations :
@@ -69,10 +70,13 @@ NB : La liste est automatiquement enregistrée de façon à pouvoir être conser
 L’exécution d’un scénario simple se fait en deux étapes :
 
 1 : Dans la section 1, cliquer sur le bouton correspondant au poste sur lequel le scénario devra s’exécuter, il devrait s’afficher en surbrillance :
+
 ![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/cible-selection.png)
 
 2 : Dans la section 2, cliquer sur le scénario à exécuter :
+
 ![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/scenario-selection.png)
 
 Le scénario sera immédiatement exécuté et son résultat sera visible dans la section 3 :
+
 ![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/resultat-surligne.png)
