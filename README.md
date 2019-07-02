@@ -1,4 +1,7 @@
 # AICToolbox - Documentation utilisateur
+
+**Pour la documentation développeur, voir le fichier DEVELOPER.md**
+
 ## Prérequis
 ### Python
 <u>Version recommandée : 3.7.3 (32 ou 64 bits)</u>
