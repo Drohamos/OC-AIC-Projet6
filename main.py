@@ -10,9 +10,7 @@ from PyQt5.QtWidgets import QApplication
 # Initialisation de PyQT (doit se faire avant le chargement de tout autre module)
 monApp=QApplication(sys.argv)
 
-import models
 import services
-import utils
 import views
 
 # Ouverture de la fenêtre principale
