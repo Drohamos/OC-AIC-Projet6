@@ -57,8 +57,6 @@ class OrdinateurButton(QPushButton):
         # On stocke une copie complète de l'objet ordinateur
         self.ordinateur = ordinateur
 
-        self.setCheckable(True)
-
 # Bouton de sélection d'un scénario
 class ScenarioButton(QPushButton):
     def __init__(self, scenario):
@@ -66,6 +64,7 @@ class ScenarioButton(QPushButton):
         super().__init__(scenario.label)
         # On stocke une toutes les infos du scénario
         self.scenario = scenario
+        self.setCheckable(True)
 
 # Raccourci pour créer LineEdit avec placeholder
 class LineEditWithPlaceholder(QLineEdit):

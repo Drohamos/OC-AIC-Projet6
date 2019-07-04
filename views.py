@@ -13,7 +13,7 @@ class Principale(QWidget):
     def __init__(self):
         super().__init__()
         self.form_ordinateur = FormOrdinateur()
-        self.selected_ordinateur_btn = None
+        self.selected_scenario_btn = None
         self.setUI()
 
     # Génère l'interface utilisateur
@@ -122,18 +122,22 @@ class Principale(QWidget):
         return group
 
     def clicked_btn_ordinateur(self):
-        # Si un autre ordinateur était déjà sélectionné, on remet le bouton à son état initial
-        if (self.selected_ordinateur_btn):
-            self.selected_ordinateur_btn.setChecked(False)
+        sender = self.sender()
+        # Empêche de décocher un bouton
+        sender.setChecked(True)
+
+    def clicked_btn_scenario(self):
+        if (self.selected_scenario_btn):
+            self.selected_scenario_btn.setChecked(False)
 
         sender = self.sender()
         # Empêche de décocher un bouton
         sender.setChecked(True)
 
-        self.selected_ordinateur_btn = sender
+        self.selected_scenario_btn = sender
 
-    def clicked_btn_scenario(self):
-        ordinateur = self.selected_ordinateur_btn.ordinateur
+        return
+
         scenario = self.sender().scenario(ordinateur)
 
         if (scenario.form):
