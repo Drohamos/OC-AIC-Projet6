@@ -40,12 +40,12 @@ Le logiciel se présente sous la forme d’une fenêtre, divisée en trois secti
 
 ![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/ensemble-avec-params.png)
 
- 1. Sélection du poste cible
- Cette section nous permet de choisir parmi une liste de cibles (ordinateur ou serveur) l’adresse de celle à laquelle nous souhaitons nous connecter.
- Il y a aussi possibilité d’utiliser un formulaire pour ajouter une cible, qui sera ensuite sauvegardée dans la liste.
- 2. Sélection du scénario
+ 1. Sélection du scénario
 Cette section offre un choix de scénarios, qui correspondent à un ensemble de commandes qui seront exécutées sur le poste cible.
 Certains scénarios ont besoin que l’on saisisse des informations (par exemple pour créer une session : nom d’utilisateur et mot de passe). Ces informations devront être saisies dans un formulaire qui s’affichera en dessous de la liste des scénarios.
+ 2. Sélection du poste cible
+ Cette section nous permet de choisir parmi une liste de cibles (ordinateur ou serveur) l’adresse de celle à laquelle nous souhaitons nous connecter.
+ Il y a aussi possibilité d’utiliser un formulaire pour ajouter une cible, qui sera ensuite sauvegardée dans la liste.
  3. Affichage du résultat
 La section résultat donne un retour d’informations sur le scénario en cours d’exécution (résultat, erreurs rencontrées, etc..)
 
@@ -72,13 +72,13 @@ NB : La liste est automatiquement enregistrée de façon à pouvoir être conser
 
 L’exécution d’un scénario simple se fait en deux étapes :
 
-1 : Dans la section 1, cliquer sur le bouton correspondant au poste sur lequel le scénario devra s’exécuter, il devrait s’afficher en surbrillance :
-
-![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/cible-selection.png)
-
-2 : Dans la section 2, cliquer sur le scénario à exécuter :
+1 : Dans la section 1, cliquer sur le scénario à exécuter :
 
 ![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/scenario-selection.png)
+
+2 : Dans la section 2, cliquer sur le bouton correspondant au poste sur lequel le scénario devra s’exécuter, il devrait s’afficher en surbrillance :
+
+![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/cible-selection.png)
 
 Le scénario sera immédiatement exécuté et son résultat sera visible dans la section 3 :
 
