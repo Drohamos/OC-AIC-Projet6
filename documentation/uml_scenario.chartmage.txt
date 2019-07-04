@@ -1,0 +1,30 @@
+participant views
+participant scenario
+participant $conec
+participant librairie Fabric
+
+note over views: Sélection d'un scénario
+
+views ->>+ scenario: Initialisation
+note over views: Sélection d'une cible (ordinateur)
+views -->> scenario: Adresse SSH ordinateur cible
+views ->> scenario: Ordre d'exécution
+
+scenario ->> librairie Fabric: Connexion à la cible
+librairie Fabric -->> scenario: $conec (handle/contrôleur de la connexion)
+
+loop Exécution des actions du scénario
+  scenario ->> $conec: Commande shell
+	alt Succès exécution commande
+  	$conec -->> scenario: Réponse
+	else Echec exécution commande
+  	$conec -->> scenario: Code erreur
+		note right of scenario: Arrêt de la boucle
+	end
+end
+
+scenario ->> librairie Fabric: Déconnexion
+
+scenario -->> views: Résultat final
+
+note over views: Affichage résultat final
