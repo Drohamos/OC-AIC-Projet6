@@ -1,0 +1,21 @@
+participant main
+participant views
+participant services
+participant Système de fichiers
+participant scenarios
+
+note over main: Démarrage application
+main ->> views: views.Principale()
+
+views ->> services: services.book.ordinateurs
+services->>Système de fichiers: Ouvrir le fichier bookmarks.cfg
+alt Le fichier existe
+  Système de fichiers-->>services: Contenu du fichier
+else Le fichier n'existe pas
+  Système de fichiers-->>services: Erreur
+end
+services -->> views: Liste des ordinateurs cibles (ou tableau vide)
+views ->> scenarios: scenarios.scenarios
+scenarios -->> views: Liste des scénarios
+views -->> views: Initialisation et mise en page des éléments de l'interface
+note over views: Affichage interface graphique
