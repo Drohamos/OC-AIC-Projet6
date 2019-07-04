@@ -25,8 +25,8 @@ class Principale(QWidget):
         col_top_left = QVBoxLayout()
         col_top_right = QVBoxLayout()
 
-        col_top_left.addWidget(self.partial_ordinateurs())
-        col_top_right.addWidget(self.partial_scenarios())
+        col_top_left.addWidget(self.partial_scenarios())
+        col_top_right.addWidget(self.partial_ordinateurs())
 
         top.addLayout(col_top_left, 1)
         top.addLayout(col_top_right, 1)
@@ -37,8 +37,8 @@ class Principale(QWidget):
         base.addWidget(self.partial_result())
 
         self.setLayout(base)
-        self.setGeometry(300,300,800,600)
-        self.setWindowTitle('Fenêtre principale')
+        self.setGeometry(300,300,700,480)
+        self.setWindowTitle('AICToolbox')
 
         self.show()
 
@@ -65,7 +65,6 @@ class Principale(QWidget):
         btn_add_ordinateur = QPushButton("Ajouter")
         btn_add_ordinateur.clicked.connect(self.clicked_btn_add_ordinateur)
         vbox.addWidget(btn_add_ordinateur)
-        vbox.addStretch(2)
 
         group.setLayout(vbox)
 
@@ -77,6 +76,7 @@ class Principale(QWidget):
         vbox = QVBoxLayout()
 
         form_scenario = self.partial_scenarios_form()
+        form_scenario.hide()
 
         vbox.addLayout(self.partial_scenarios_list())
         vbox.addStretch(1)
@@ -106,11 +106,6 @@ class Principale(QWidget):
 
         self.form_scenario_container = QStackedLayout()
         vbox.addLayout(self.form_scenario_container)
-
-        btn_execute = QPushButton("Test")
-        btn_execute.clicked.connect(self.clicked_btn_execute)
-
-        vbox.addWidget(btn_execute)
 
         self.form_scenario_frame.setLayout(vbox)
 
@@ -149,9 +144,6 @@ class Principale(QWidget):
             self.form_scenario_frame.hide()
 
         self.run_scenario(scenario)
-
-    def clicked_btn_execute(self):
-        print(self.form_scenario.get_values())
 
     def clicked_btn_add_ordinateur(self):
         form = self.form_ordinateur
