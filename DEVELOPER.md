@@ -57,3 +57,15 @@ L'ensemble des tests sera automatiquement exécuté. Si un ou plusieurs tests é
 ## Voies d'amélioration
 - Permettre d’exécuter un scénario sur plusieurs ordinateurs
 - Automatiser la création de clé SSH
+
+## Diagrammes de séquence
+
+Les diagrammes ci-dessous représentent de façon détaillée le fonctionnement des étapes-clé du logiciel :
+
+### Initialisation
+
+![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/uml_initialisation.png)
+
+### Exécution d'un scénario
+
+![](https://raw.githubusercontent.com/Drohamos/OC-AIC-Projet6/master/documentation/uml_scenario.png)
