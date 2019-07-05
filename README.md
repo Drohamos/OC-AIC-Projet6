@@ -22,6 +22,12 @@ La librairie Fabric s’installe avec la commande suivante :
 
 > pip install Fabric==2.4
 
+### Configuration des machines cibles
+
+Pour des raisons de sécurité et de simplicité d'utilisation, les machines cibles doivent déjà être configurées pour autoriser l'authentification SSH par clé publique/privée.
+
+Plus d'informations : https://doc.ubuntu-fr.org/ssh#authentification_par_un_systeme_de_cles_publiqueprivee
+
 ## Démarrage du logiciel
 
 Ouvrir un terminal / invite de commande et utiliser la commande suivante :
