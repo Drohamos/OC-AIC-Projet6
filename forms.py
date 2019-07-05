@@ -18,6 +18,10 @@ class FormScenario(QFrame):
 
         for field in fields:
             lineEdit = utils.LineEditWithPlaceholder(field)
+
+            if (field.startswith("Mot de passe")):
+                lineEdit.setEchoMode(QLineEdit.Password)
+
             self.fields.append(lineEdit)
             self.hbox.addWidget(lineEdit)
 
