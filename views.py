@@ -1,7 +1,8 @@
 # AICToolbox
 # Auteur : Robin BARKAS
 
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox, QFrame, QStackedLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox, QFrame, QStackedLayout, QTextEdit
+from PyQt5.QtGui import QTextCursor
 
 import models
 import services
@@ -37,7 +38,7 @@ class Principale(QWidget):
         base.addWidget(self.partial_result())
 
         self.setLayout(base)
-        self.setGeometry(300,300,700,480)
+        self.setGeometry(300,300,800,600)
         self.setWindowTitle('AICToolbox')
 
         self.show()
@@ -169,7 +170,8 @@ class Principale(QWidget):
         try:
             result = scenario.run(ordinateur)
         except Exception as err:
-            self.console.new_error(err)
+            self.console.new_error(str(err))
+            self.console.end_run()
         else:
             self.console.end_run(result.stdout)
 
@@ -216,17 +218,20 @@ class ResultConsole(QVBoxLayout):
         self.setUI()
 
     def setUI(self):
-        self.prompt = QVBoxLayout()
-        self.addLayout(self.prompt)
-        self.addStretch(1)
+        self.prompt = QTextEdit()
+        self.prompt.insertAction
+        self.prompt.setReadOnly(True)
+        self.addWidget(self.prompt)
 
     # Début d'un scénario
     def new_run(self, scenario, ordinateur):
-        self.prompt.addWidget(QLabel("Connexion à " + ordinateur.ssh_address))
+        self.addText("Connexion à " + ordinateur.ssh_address)
+        #self.prompt.addWidget(QLabel("Connexion à " + ordinateur.ssh_address))
 
     # Réalisation d'une nouvelle étape du scénario
     def new_step(self):
-        self.prompt.addWidget(QLabel("Action effectuée"))
+        self.prompt.inser
+        self.addText("Action effectuée")
 
     # Affichage d'une erreur (texte rouge)
     def new_error(self, err):
@@ -235,11 +240,28 @@ class ResultConsole(QVBoxLayout):
         label = QLabel("Erreur")
         label.setStyleSheet("color: red")
 
-        self.prompt.addWidget(label)
+        self.addError(err)
 
     # Fin du scénario, affichage du résultat s'il y en a un
     def end_run(self, result = None):
         if (result):
-            self.prompt.addWidget(QLabel("Résultat : " + result))
+            self.addRawText("Résultat : " + result)
 
-        self.prompt.addWidget(QLabel("Scénario terminé"))
+        self.addText("===== Scénario terminé =====")
+
+    def addError(self, text):
+        self.prompt.insertHtml('<p><strong><font color="red">Erreur : <i>' + text + '</i></font></strong></p>')
+        self.addLineBreak()
+
+    def addRawText(self, text):
+        self.prompt.insertHtml('<pre>' + text + '</pre>')
+        self.addLineBreak()
+
+    def addText(self, text):
+        self.prompt.insertHtml('<p>' + text + '</p>')
+        self.addLineBreak()
+
+    def addLineBreak(self):
+        self.prompt.insertPlainText('\n')
+        self.prompt.moveCursor(QTextCursor.End)
+
