@@ -2,6 +2,7 @@
 # Auteur : Robin BARKAS
 
 from fabric import Connection
+from invoke import Responder
 
 # Cache les avertissements de dépréciation envoyés par les dépendances de la librairie Fabric
 import warnings
@@ -74,10 +75,22 @@ class GetInterfaceDetailsScenario(ScenarioWithParams):
 
 class CreateSessionScenario(ScenarioWithParams):
     label = "Créer une session"
-    form  = forms.FormScenario(["Nom d'utilisateur", "Mot de passe"])
+    form  = forms.FormScenario(["Nom d'utilisateur", "Mot de passe", "Mot de passe root"])
 
     def execute(self):
-        result = self.conec.run('hostname -s', hide=True)
+        username = self.form.fields[0].text()
+        new_password = self.form.fields[1].text() + '\n'
+        root = self.form.fields[2].text() + '\n'
+
+        sudopass = Responder(pattern=r'\[sudo\] password', response=root)
+        new_user_pass = Responder(pattern=r'UNIX password', response=new_password)
+        
+        # Réinitialisation champ root
+        self.form.fields[2].setText("")
+
+        self.conec.run('sudo useradd ' + username, pty=True, watchers=[sudopass])
+        result = self.conec.run('sudo passwd ' + username, pty=True, watchers=[sudopass, new_user_pass])
+
 
         self.close()
 

@@ -171,7 +171,9 @@ class Principale(QWidget):
         try:
             result = scenario.run(ordinateur)
         except invoke_exp.UnexpectedExit as err:
-            self.console.new_error(err.result.stderr)
+            if (err.result.stderr):
+                self.console.new_error(err.result.stderr)
+            else: self.console.new_error(err.result.stdout)
         except Exception as err:
             self.console.new_error(str(err))
         else:
