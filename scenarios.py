@@ -12,9 +12,8 @@ import forms
 
 # Classe scenario générique, ne devrait pas être utilisée directement
 class Scenario:
-    def __init__(self, ordinateur):
-        self.ordinateur = ordinateur
-        self.setup_conec()
+    def __init__(self):
+        pass
 
     # Formulaire du scénario
     # Par défaut, renvoie None (pas de formulaire)
@@ -28,7 +27,9 @@ class Scenario:
         print("Préparation connexion à " + self.ordinateur.ssh_address)
         self.conec = Connection(self.ordinateur.ssh_address, connect_timeout=5)
 
-    def run(self):
+    def run(self, ordinateur):
+        self.ordinateur = ordinateur
+        self.setup_conec()
         return self.execute()
         # @todo Nettoyage (fermeture connexion) automatique après exécution
         # actuellement implémenté manuellement dans chaque scénario
@@ -44,9 +45,7 @@ class Scenario:
         self.conec.close()
 
 class ScenarioWithParams(Scenario):
-    def __init__(self, ordinateur):
-        super().__init__(ordinateur)
-
+    @property
     def form(self):
         raise NotImplementedError("La méthode form() de ce scénario n'a pas été implémentée")
 

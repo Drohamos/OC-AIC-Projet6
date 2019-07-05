@@ -63,7 +63,7 @@ class ScenarioButton(QPushButton):
         # Le label sera l'adresse ip de l'ordinateur
         super().__init__(scenario.label)
         # On stocke une toutes les infos du scénario
-        self.scenario = scenario
+        self.scenario = scenario()
         self.setCheckable(True)
 
 # Raccourci pour créer LineEdit avec placeholder

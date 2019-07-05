@@ -126,6 +126,12 @@ class Principale(QWidget):
         # Empêche de décocher un bouton
         sender.setChecked(True)
 
+        ordinateur = sender.ordinateur
+
+        if (self.selected_scenario_btn):
+            scenario = self.selected_scenario_btn.scenario
+            self.run_scenario(scenario, ordinateur)
+
     def clicked_btn_scenario(self):
         if (self.selected_scenario_btn):
             self.selected_scenario_btn.setChecked(False)
@@ -136,9 +142,8 @@ class Principale(QWidget):
 
         self.selected_scenario_btn = sender
 
-        return
-
-        scenario = self.sender().scenario(ordinateur)
+        # Initialisation du scénario
+        scenario = sender.scenario
 
         if (scenario.form):
             self.form_scenario_frame.show()
@@ -146,8 +151,6 @@ class Principale(QWidget):
             self.form_scenario_container.setCurrentIndex(1)
         else:
             self.form_scenario_frame.hide()
-
-        self.run_scenario(scenario)
 
     def clicked_btn_add_ordinateur(self):
         form = self.form_ordinateur
@@ -160,11 +163,11 @@ class Principale(QWidget):
         self.grille_ordinateurs.autoAddWidget(btn)
         form.reset()
 
-    def run_scenario(self, scenario):
-        self.console.new_run(scenario)
+    def run_scenario(self, scenario, ordinateur):
+        self.console.new_run(scenario, ordinateur)
 
         try:
-            result = scenario.execute()
+            result = scenario.run(ordinateur)
         except Exception as err:
             self.console.new_error(err)
         else:
@@ -218,8 +221,8 @@ class ResultConsole(QVBoxLayout):
         self.addStretch(1)
 
     # Début d'un scénario
-    def new_run(self, scenario):
-        self.prompt.addWidget(QLabel("Connexion à " + scenario.ordinateur.ssh_address))
+    def new_run(self, scenario, ordinateur):
+        self.prompt.addWidget(QLabel("Connexion à " + ordinateur.ssh_address))
 
     # Réalisation d'une nouvelle étape du scénario
     def new_step(self):
