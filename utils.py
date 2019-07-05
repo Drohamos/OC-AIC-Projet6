@@ -52,8 +52,12 @@ class AutoGridLayout(QGridLayout):
 # Bouton de connexion à un ordinateur
 class OrdinateurButton(QPushButton):
     def __init__(self, ordinateur):
-        # Le label sera l'adresse ip de l'ordinateur
-        super().__init__(ordinateur.ip)
+        if (ordinateur.name):
+            # Le label sera l'adresse ip de l'ordinateur
+            super().__init__(ordinateur.name + " (" + ordinateur.ip + ")")
+        else:
+            # Le label sera l'adresse ip de l'ordinateur
+            super().__init__(ordinateur.ip)
         # On stocke une copie complète de l'objet ordinateur
         self.ordinateur = ordinateur
 
