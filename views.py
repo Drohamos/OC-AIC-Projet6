@@ -3,6 +3,7 @@
 
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QMessageBox, QGroupBox, QFrame, QStackedLayout, QTextEdit
 from PyQt5.QtGui import QTextCursor
+from invoke import exceptions as invoke_exp
 
 import models
 import services
@@ -169,9 +170,10 @@ class Principale(QWidget):
 
         try:
             result = scenario.run(ordinateur)
+        except invoke_exp.UnexpectedExit as err:
+            self.console.new_error(err.result.stderr)
         except Exception as err:
             self.console.new_error(str(err))
-            self.console.end_run()
         else:
             self.console.end_run(result.stdout)
 
@@ -248,13 +250,14 @@ class ResultConsole(QVBoxLayout):
             self.addRawText("Résultat : " + result)
 
         self.addText("===== Scénario terminé =====")
+        self.addLineBreak()
 
     def addError(self, text):
-        self.prompt.insertHtml('<p><strong><font color="red">Erreur : <i>' + text + '</i></font></strong></p>')
+        self.prompt.insertHtml('<p><strong><font color="red">Erreur : <pre><i>' + text + '</i><pre></font></strong></p>')
         self.addLineBreak()
 
     def addRawText(self, text):
-        self.prompt.insertHtml('<pre>' + text + '</pre>')
+        self.prompt.insertHtml('<pre>' + text + '\n</pre>')
         self.addLineBreak()
 
     def addText(self, text):
@@ -262,6 +265,7 @@ class ResultConsole(QVBoxLayout):
         self.addLineBreak()
 
     def addLineBreak(self):
+        self.prompt.insertHtml('<br/>')
         self.prompt.insertPlainText('\n')
         self.prompt.moveCursor(QTextCursor.End)
 
