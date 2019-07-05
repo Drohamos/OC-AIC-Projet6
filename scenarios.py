@@ -25,7 +25,7 @@ class Scenario:
     # Préparation de la connexion (création instance)
     def setup_conec(self):
         print("Préparation connexion à " + self.ordinateur.ssh_address)
-        self.conec = Connection(self.ordinateur.ssh_address, connect_timeout=5)
+        self.conec = Connection(self.ordinateur.ssh_address, connect_timeout=2)
 
     def run(self, ordinateur):
         self.ordinateur = ordinateur
